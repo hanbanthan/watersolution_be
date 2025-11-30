@@ -18,8 +18,8 @@ public class UserDetailsCustom implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        vn.jabeznguyen.watersolution_be.domain.User user = this.userService.handleGetUserByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        vn.jabeznguyen.watersolution_be.domain.User user = this.userService.handleGetUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("Username/password not suitable");
         }

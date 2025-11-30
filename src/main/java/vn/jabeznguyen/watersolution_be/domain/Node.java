@@ -2,7 +2,7 @@ package vn.jabeznguyen.watersolution_be.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import vn.jabeznguyen.watersolution_be.domain.enums.NodeStatus;
+import vn.jabeznguyen.watersolution_be.util.constant.NodeStatus;
 import vn.jabeznguyen.watersolution_be.util.SecurityUtil;
 
 import java.math.BigDecimal;
@@ -111,8 +111,16 @@ public class Node {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() == true ?
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ?
                 SecurityUtil.getCurrentUserLogin().get() : "";
         this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        this.updatedAt = Instant.now();
     }
 }

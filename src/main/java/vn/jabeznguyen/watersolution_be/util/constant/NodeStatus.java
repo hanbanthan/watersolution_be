@@ -1,4 +1,4 @@
-package vn.jabeznguyen.watersolution_be.domain.enums;
+package vn.jabeznguyen.watersolution_be.util.constant;
 
 public enum NodeStatus {
     ACTIVE,

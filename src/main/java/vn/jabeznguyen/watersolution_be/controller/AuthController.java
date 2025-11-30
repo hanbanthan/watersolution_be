@@ -2,6 +2,7 @@ package vn.jabeznguyen.watersolution_be.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
 import vn.jabeznguyen.watersolution_be.domain.dto.LoginDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import vn.jabeznguyen.watersolution_be.domain.dto.ResLoginDTO;
 import vn.jabeznguyen.watersolution_be.util.SecurityUtil;
 
 @RestController
+@RequestMapping("/api/v1")
 public class AuthController {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
