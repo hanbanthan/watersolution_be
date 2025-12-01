@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResLoginDTO {
 
-    @JsonProperty("access_token")
     private String accessToken;
     private UserLogin user;
 
@@ -49,12 +48,14 @@ public class ResLoginDTO {
 
     public static class UserGetAccount {
         private UserLogin user;
+        private boolean isAuthenticated;
 
         public UserGetAccount() {
         }
 
-        public UserGetAccount(UserLogin user) {
+        public UserGetAccount(UserLogin user, boolean isAuthenticated) {
             this.user = user;
+            this.isAuthenticated = isAuthenticated;
         }
 
         public UserLogin getUser() {
@@ -63,6 +64,14 @@ public class ResLoginDTO {
 
         public void setUser(UserLogin user) {
             this.user = user;
+        }
+
+        public boolean getIsAuthenticated() {
+            return isAuthenticated;
+        }
+
+        public void setIsAuthenticated(boolean isAuthenticated) {
+            this.isAuthenticated = isAuthenticated;
         }
     }
 

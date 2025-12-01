@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import vn.jabeznguyen.watersolution_be.domain.dto.ResLoginDTO;
+import vn.jabeznguyen.watersolution_be.service.PasswordResetService;
 import vn.jabeznguyen.watersolution_be.service.UserService;
 import vn.jabeznguyen.watersolution_be.util.SecurityUtil;
 import vn.jabeznguyen.watersolution_be.util.annotation.ApiMessage;
@@ -26,16 +27,19 @@ public class AuthController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final SecurityUtil securityUtil;
     private final UserService userService;
+    private final PasswordResetService passwordResetService;
 
     @Value("${jabeznguyen.jwt.refresh-token-validity-in-seconds}")
     private Long refreshTokenExpiration;
 
     public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder,
                           SecurityUtil securityUtil,
-                          UserService userService) {
+                          UserService userService,
+                          PasswordResetService passwordResetService) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.userService = userService;
+        this.passwordResetService = passwordResetService;
     }
 
     @PostMapping("/auth/login")
@@ -98,6 +102,9 @@ public class AuthController {
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setUsername(currentUserDB.getUsername());
             userGetAccount.setUser(userLogin);
+            userGetAccount.setIsAuthenticated(true);
+        } else {
+            userGetAccount.setIsAuthenticated(false);
         }
         return ResponseEntity.ok().body(userGetAccount);
     }
@@ -159,7 +166,7 @@ public class AuthController {
     public ResponseEntity<Void> logout() throws IdInvalidException {
         String username = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
 
-        if (username.equals("")) {
+        if (username.isEmpty()) {
             throw new IdInvalidException("Access Token not valid.");
         }
 
@@ -178,6 +185,27 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString())
                 .body(null);
+    }
+
+    @PostMapping("/auth/forgot-password")
+    @ApiMessage("Request Password Reset")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email, @RequestParam String username) {
+        String result = passwordResetService.forgotPassword(email, username);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/auth/verify-code")
+    @ApiMessage("Verify Password Reset Token")
+    public ResponseEntity<String> verifyVerificationCode(@RequestParam String email, @RequestParam String token) {
+        String result = passwordResetService.verifyVerificationCode(email, token);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/auth/reset-password")
+    @ApiMessage("Reset User Password")
+    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String password) {
+        String result = passwordResetService.resetPassword(email, password);
+        return ResponseEntity.ok(result);
     }
 
 }
