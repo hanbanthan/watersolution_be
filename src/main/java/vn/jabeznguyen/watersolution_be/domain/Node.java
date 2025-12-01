@@ -28,7 +28,7 @@ public class Node {
     @Column(nullable = false)
     private NodeStatus status = NodeStatus.ACTIVE;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 
     private Instant updatedAt;

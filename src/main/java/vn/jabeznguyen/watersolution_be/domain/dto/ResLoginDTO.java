@@ -1,7 +1,10 @@
 package vn.jabeznguyen.watersolution_be.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ResLoginDTO {
 
+    @JsonProperty("access_token")
     private String accessToken;
     private UserLogin user;
 
@@ -41,6 +44,25 @@ public class ResLoginDTO {
 
         public void setUsername(String username) {
             this.username = username;
+        }
+    }
+
+    public static class UserGetAccount {
+        private UserLogin user;
+
+        public UserGetAccount() {
+        }
+
+        public UserGetAccount(UserLogin user) {
+            this.user = user;
+        }
+
+        public UserLogin getUser() {
+            return user;
+        }
+
+        public void setUser(UserLogin user) {
+            this.user = user;
         }
     }
 
