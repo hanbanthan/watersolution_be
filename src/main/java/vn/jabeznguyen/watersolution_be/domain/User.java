@@ -22,7 +22,9 @@ public class User {
     @NotBlank(message = "password not empty")
     private String password;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
+
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
