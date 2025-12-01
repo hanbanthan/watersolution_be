@@ -98,6 +98,9 @@ public class AuthController {
             userLogin.setEmail(currentUserDB.getEmail());
             userLogin.setUsername(currentUserDB.getUsername());
             userGetAccount.setUser(userLogin);
+            userGetAccount.setIsAuthenticated(true);
+        } else {
+            userGetAccount.setIsAuthenticated(false);
         }
         return ResponseEntity.ok().body(userGetAccount);
     }
